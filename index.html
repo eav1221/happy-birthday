@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 19th Birthday, Ann G!</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&family=Playfair+Display&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 30%,#0f3460 60%,#e94560 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow-x:hidden}
+.card{background:rgba(255,255,255,0.97);border-radius:30px;padding:40px 30px;max-width:600px;width:100%;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,0.4);animation:cardIn 1.5s cubic-bezier(0.34,1.56,0.64,1) forwards;opacity:0;transform:translateY(50px) scale(0.9);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#9b59b6,#87CEEB,#ff69b4,#9b59b6,#87CEEB,#ff69b4);background-size:300% 100%;animation:gradShift 4s linear infinite}
+@keyframes cardIn{to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes gradShift{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+.date-badge{display:inline-block;background:linear-gradient(45deg,#87CEEB,#9b59b6);color:white;padding:6px 20px;border-radius:50px;font-size:0.85rem;font-weight:600;margin-bottom:10px}
+.age-badge{display:inline-block;background:linear-gradient(45deg,#9b59b6,#ff69b4);color:white;padding:8px 25px;border-radius:50px;font-size:0.9rem;font-weight:600;margin-bottom:15px;letter-spacing:2px;text-transform:uppercase;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(155,89,182,0.4)}50%{transform:scale(1.05);box-shadow:0 0 0 10px rgba(155,89,182,0)}}
+.cake{font-size:60px;margin-bottom:10px;animation:bounce 2s infinite;display:inline-block}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.title{font-family:'Great Vibes',cursive;font-size:3.5rem;background:linear-gradient(45deg,#9b59b6,#87CEEB,#ff69b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px}
+.name{font-family:'Great Vibes',cursive;font-size:3rem;color:#16213e;margin-bottom:10px}
+.subtitle{font-size:1.1rem;color:#888;margin-bottom:20px;font-style:italic}
+.divider{width:80px;height:3px;background:linear-gradient(90deg,#9b59b6,#87CEEB,#ff69b4);margin:0 auto 20px;border-radius:3px}
+.candles{display:flex;justify-content:center;gap:8px;margin:15px 0;flex-wrap:wrap}
+.candle{position:relative;width:8px;height:35px;background:linear-gradient(to bottom,#9b59b6,#7d3c98);border-radius:4px}
+.candle::before{content:'';position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:10px;height:15px;background:radial-gradient(ellipse at center,#ffd700 0%,#ff8c00 50%,transparent 70%);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flicker 0.5s infinite alternate}
+@keyframes flicker{0%{transform:translateX(-50%) scale(1);opacity:0.9}100%{transform:translateX(-50%) scale(1.1);opacity:1}}
+.letter{text-align:left;font-family:'Playfair Display',serif;font-size:1rem;color:#444;line-height:1.9;margin-bottom:25px;padding:20px;background:linear-gradient(135deg,rgba(155,89,182,0.05),rgba(135,206,235,0.05),rgba(255,105,180,0.05));border-radius:15px;border-left:4px solid #9b59b6}
+.letter p{margin-bottom:12px}
+.letter .signature{text-align:right;font-style:italic;color:#9b59b6;font-weight:600;margin-top:15px;font-family:'Great Vibes',cursive;font-size:1.3rem}
+.btn{background:linear-gradient(45deg,#9b59b6,#ff69b4);color:white;border:none;padding:14px 40px;font-size:1.1rem;border-radius:50px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;box-shadow:0 10px 30px rgba(155,89,182,0.4);transition:all 0.3s;margin-bottom:10px}
+.btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(155,89,182,0.6)}
+.footer{font-size:0.8rem;color:#aaa;font-style:italic}
+.balloon{position:fixed;bottom:-100px;font-size:40px;animation:flyUp 7s linear forwards;z-index:5;pointer-events:none}
+@keyframes flyUp{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(-120vh) rotate(20deg);opacity:0}}
+.confetti{position:fixed;width:8px;height:8px;top:-10px;z-index:10;pointer-events:none}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.heart{position:fixed;color:#ff69b4;font-size:20px;animation:heartFloat 6s linear forwards;z-index:6;pointer-events:none}
+@keyframes heartFloat{0%{transform:translateY(0) scale(0.5);opacity:0}10%{opacity:1;transform:translateY(-20px) scale(1)}100%{transform:translateY(-100vh) scale(0.8);opacity:0}}
+.firework{position:fixed;width:4px;height:4px;border-radius:50%;z-index:8;pointer-events:none}
+@keyframes explode{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+@media(max-width:600px){.title{font-size:2.5rem}.name{font-size:2.2rem}.card{padding:25px 20px}.letter{font-size:0.9rem;padding:15px}}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="date-badge">August 12</div>
+<div class="age-badge">19th Birthday</div>
+<div class="cake">🎂</div>
+<h1 class="title">Happy Birthday</h1>
+<h2 class="name">Ann G</h2>
+<p class="subtitle">To the one who holds my heart</p>
+<div class="divider"></div>
+<div class="candles">
+<div class="candle"></div><div class="candle"></div><div class="candle"></div>
+<div class="candle"></div><div class="candle"></div><div class="candle"></div>
+<div class="candle"></div><div class="candle"></div><div class="candle"></div>
+</div>
+<div class="letter">
+<p>My love,</p>
+<p>I know we're not officially together yet, but I wanted you to know what's in my heart.</p>
+<p>From the moment you became part of my life, I've found myself caring about you more and more each day. I don't know what the future will bring, but if there's one thing I hope for, it's that one day I'll get to spend my life with you.</p>
+<p>I'm not here for something temporary. If you choose me, I'll be someone who stays through the good days and the hard ones. I'll keep choosing you, respecting you, and caring for you with all my heart.</p>
+<p>For now, I'll be patient. I'll continue showing you how much you mean to me, one day at a time. I hope that someday, you'll let me be the person who gets to call you mine.</p>
+<p>Take care of yourself always. I'm quietly cheering for you every single day.</p>
+<div class="signature">— With all my heart</div>
+</div>
+<button class="btn" onclick="celebrate()">🎊 Celebrate Ann G! 🎊</button>
+<p class="footer">Click anywhere for fireworks ✨</p>
+</div>
+<script>
+function celebrate(){
+for(let i=0;i<80;i++)setTimeout(()=>{
+let c=document.createElement('div');c.className='confetti';
+c.style.left=Math.random()*100+'%';
+c.style.background=['#9b59b6','#87CEEB','#ff69b4','#feca57','#ffd700'][Math.floor(Math.random()*5)];
+c.style.animation=`confettiFall ${Math.random()*3+2}s linear forwards`;
+document.body.appendChild(c);setTimeout(()=>c.remove(),5000)
+},i*30);
+for(let i=0;i<10;i++)setTimeout(createBalloon,i*500);
+for(let i=0;i<8;i++)setTimeout(createHeart,i*400);
+for(let i=0;i<5;i++)setTimeout(()=>createFirework(Math.random()*window.innerWidth,Math.random()*window.innerHeight*0.5),i*300);
+document.querySelector('.btn').textContent='🎉 Party Time! 🎉';
+}
+function createBalloon(){
+let b=document.createElement('div');b.className='balloon';
+b.textContent=['🎈','🎊','🎉','🎁','✨','⭐'][Math.floor(Math.random()*6)];
+b.style.left=Math.random()*90+5+'%';b.style.fontSize=(Math.random()*20+30)+'px';
+b.style.animationDuration=(Math.random()*4+6)+'s';document.body.appendChild(b);
+setTimeout(()=>b.remove(),10000)
+}
+function createHeart(){
+let h=document.createElement('div');h.className='heart';
+h.textContent=['❤️','💖','💕','💗'][Math.floor(Math.random()*4)];
+h.style.left=Math.random()*90+5+'%';h.style.fontSize=(Math.random()*10+15)+'px';
+h.style.animationDuration=(Math.random()*3+5)+'s';document.body.appendChild(h);
+setTimeout(()=>h.remove(),8000)
+}
+function createFirework(x,y){
+let colors=['#9b59b6','#87CEEB','#ff69b4','#feca57','#ffd700'];
+for(let i=0;i<30;i++){
+let p=document.createElement('div');p.className='firework';
+p.style.left=x+'px';p.style.top=y+'px';p.style.background=colors[Math.floor(Math.random()*5)];
+let angle=(Math.PI*2*i)/30;let velocity=Math.random()*120+40;
+p.style.setProperty('--tx',Math.cos(angle)*velocity+'px');
+p.style.setProperty('--ty',Math.sin(angle)*velocity+'px');
+p.style.animation='explode 1s ease-out forwards';document.body.appendChild(p);
+setTimeout(()=>p.remove(),1000)
+}
+}
+document.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')createFirework(e.clientX,e.clientY)});
+</script>
+</body>
+</html>
 
