@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowers for you 🌷</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #050510;
+  }
+
+  .tulip-container {
+    width: 100%;
+    height: 100vh;
+    background: radial-gradient(circle at 50% 60%, #1a0a2e 0%, #0d0d1a 50%, #050510 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Playfair Display', Georgia, serif;
+    cursor: crosshair;
+  }
+
+  .title-text {
+    position: absolute;
+    top: 12%;
+    color: #f0d040;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(240, 208, 64, 0.3);
+    opacity: 0;
+    animation: fadeInDown 1.5s ease-out 0.5s forwards;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .tulip-emoji {
+    display: inline-block;
+    margin-left: 8px;
+    animation: gentleBounce 2s ease-in-out infinite;
+  }
+
+  .subtitle {
+    position: absolute;
+    top: 19%;
+    color: #888;
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0;
+    animation: fadeIn 2s ease-out 1s forwards;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .garden {
+    position: relative;
+    width: 500px;
+    height: 450px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 60px;
+    perspective: 800px;
+  }
+
+  .tulip-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: bottom center;
+    margin: 0 -20px;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+  }
+
+  .tulip-wrapper:nth-child(1) { 
+    --delay: 0.3s; 
+    --sway-delay: 0s; 
+    transform: scale(0.85); 
+    margin-bottom: -10px; 
+    --hue-rotate: 0deg;
+    --glow-color: rgba(180, 100, 255, 0.5);
+    --petal-gradient: linear-gradient(to top, #8b5cf6 0%, #a78bfa 30%, #c4b5fd 60%, #ddd6fe 100%);
+    --petal-side-gradient: linear-gradient(to top, #7c3aed 0%, #9f7aea 30%, #b794f6 60%, #d8b4fe 100%);
+  }
+  .tulip-wrapper:nth-child(2) { 
+    --delay: 0.6s; 
+    --sway-delay: 0.5s; 
+    transform: scale(0.7); 
+    margin-bottom: -30px; 
+    z-index: 1; 
+    --hue-rotate: 0deg;
+    --glow-color: rgba(100, 200, 255, 0.5);
+    --petal-gradient: linear-gradient(to top, #0ea5e9 0%, #38bdf8 30%, #7dd3fc 60%, #bae6fd 100%);
+    --petal-side-gradient: linear-gradient(to top, #0284c7 0%, #0ea5e9 30%, #60a5fa 60%, #93c5fd 100%);
+  }
+  .tulip-wrapper:nth-child(3) { 
+    --delay: 0s; 
+    --sway-delay: 1s; 
+    transform: scale(1); 
+    z-index: 2; 
+    --hue-rotate: 0deg;
+    --glow-color: rgba(255, 100, 180, 0.5);
+    --petal-gradient: linear-gradient(to top, #ec4899 0%, #f472b6 30%, #f9a8d4 60%, #fbcfe8 100%);
+    --petal-side-gradient: linear-gradient(to top, #db2777 0%, #ec4899 30%, #f472b6 60%, #f9a8d4 100%);
+  }
+  .tulip-wrapper:nth-child(4) { 
+    --delay: 0.9s; 
+    --sway-delay: 1.5s; 
+    transform: scale(0.75); 
+    margin-bottom: -25px; 
+    z-index: 1; 
+    --hue-rotate: 0deg;
+    --glow-color: rgba(180, 100, 255, 0.5);
+    --petal-gradient: linear-gradient(to top, #a855f7 0%, #c084fc 30%, #d8b4fe 60%, #ede9fe 100%);
+    --petal-side-gradient: linear-gradient(to top, #9333ea 0%, #a855f7 30%, #c084fc 60%, #e9d5ff 100%);
+  }
+  .tulip-wrapper:nth-child(5) { 
+    --delay: 0.45s; 
+    --sway-delay: 0.8s; 
+    transform: scale(0.9); 
+    margin-bottom: -5px; 
+    --hue-rotate: 0deg;
+    --glow-color: rgba(100, 200, 255, 0.5);
+    --petal-gradient: linear-gradient(to top, #06b6d4 0%, #22d3ee 30%, #67e8f9 60%, #a5f3fc 100%);
+    --petal-side-gradient: linear-gradient(to top, #0891b2 0%, #06b6d4 30%, #22d3ee 60%, #cffafe 100%);
+  }
+
+  .flower-head {
+    position: relative;
+    width: 55px;
+    height: 60px;
+    opacity: 0;
+    transform: scale(0) translateY(20px);
+    animation: bloom 2s ease-out var(--delay) forwards;
+    filter: drop-shadow(0 0 12px var(--glow-color));
+  }
+
+  .petal {
+    position: absolute;
+    bottom: 0;
+    width: 26px;
+    height: 55px;
+    background: var(--petal-gradient);
+    border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+    box-shadow: inset -2px 0 6px rgba(255,255,255,0.25), inset 2px 0 4px rgba(0,0,0,0.1);
+  }
+
+  .petal:nth-child(1) { 
+    left: 50%; 
+    transform: translateX(-50%) rotate(0deg); 
+    z-index: 3; 
+    height: 60px; 
+    width: 28px;
+  }
+  .petal:nth-child(2) { 
+    left: 0px; 
+    transform: rotate(-28deg); 
+    z-index: 2; 
+    background: var(--petal-side-gradient);
+  }
+  .petal:nth-child(3) { 
+    right: 0px; 
+    transform: rotate(28deg); 
+    z-index: 2; 
+    background: var(--petal-side-gradient);
+  }
+
+  .petal::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    width: 40%;
+    height: 60%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    border-radius: 50%;
+    filter: blur(2px);
+  }
+
+  .stem {
+    width: 3.5px;
+    height: 0;
+    background: linear-gradient(to bottom, #86efac 0%, #4ade80 30%, #22c55e 100%);
+    border-radius: 2px;
+    transform-origin: bottom center;
+    animation: growStem 1.5s ease-out var(--delay) forwards;
+    position: relative;
+    box-shadow: 0 0 4px rgba(74, 222, 128, 0.3);
+  }
+
+  .leaf {
+    position: absolute;
+    width: 32px;
+    height: 55px;
+    background: linear-gradient(135deg, #86efac 0%, #4ade80 40%, #22c55e 100%);
+    border-radius: 0 90% 0 90%;
+    opacity: 0;
+    transform: scale(0);
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.2);
+  }
+
+  .leaf.left {
+    left: -30px;
+    top: 25%;
+    transform-origin: right bottom;
+    animation: leafGrowLeft 1s ease-out calc(var(--delay) + 0.8s) forwards;
+  }
+
+  .leaf.right {
+    right: -30px;
+    top: 45%;
+    transform-origin: left bottom;
+    animation: leafGrowRight 1s ease-out calc(var(--delay) + 0.9s) forwards;
+  }
+
+  .tulip-wrapper:nth-child(1) .stem { --stem-height: 150px; }
+  .tulip-wrapper:nth-child(2) .stem { --stem-height: 115px; }
+  .tulip-wrapper:nth-child(3) .stem { --stem-height: 180px; }
+  .tulip-wrapper:nth-child(4) .stem { --stem-height: 125px; }
+  .tulip-wrapper:nth-child(5) .stem { --stem-height: 160px; }
+
+  .sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .glow-orb {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(14, 165, 233, 0.08) 40%, transparent 70%);
+    border-radius: 50%;
+    bottom: 5%;
+    pointer-events: none;
+    animation: pulse 5s ease-in-out infinite;
+  }
+
+  .controls {
+    position: absolute;
+    bottom: 25px;
+    display: flex;
+    gap: 15px;
+    z-index: 20;
+  }
+
+  .btn {
+    padding: 10px 24px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #ccc;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .btn:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.5);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(139, 92, 246, 0.3);
+  }
+
+  .cursor-tracker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100;
+    transition: transform 0.1s ease-out, opacity 0.3s;
+    opacity: 0;
+  }
+
+  .color-legend {
+    position: absolute;
+    top: 26%;
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    animation: fadeIn 2s ease-out 1.5s forwards;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #aaa;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentColor;
+  }
+
+  @keyframes growStem {
+    0% { height: 0; }
+    100% { height: var(--stem-height); }
+  }
+
+  @keyframes bloom {
+    0% { opacity: 0; transform: scale(0) translateY(20px) rotate(-5deg); }
+    50% { opacity: 1; transform: scale(1.15) translateY(-8px) rotate(2deg); }
+    75% { transform: scale(0.95) translateY(2px) rotate(-1deg); }
+    100% { opacity: 1; transform: scale(1) translateY(0) rotate(0deg); }
+  }
+
+  @keyframes leafGrowLeft {
+    0% { opacity: 0; transform: scale(0) rotate(-5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(-18deg); }
+  }
+
+  @keyframes leafGrowRight {
+    0% { opacity: 0; transform: scale(0) rotate(5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(18deg); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes gentleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.15); opacity: 0.7; }
+  }
+
+  @keyframes sparkleFloat {
+    0% { opacity: 0; transform: translateY(0) scale(0) rotate(0deg); }
+    15% { opacity: 1; transform: translateY(-15px) scale(1) rotate(45deg); }
+    100% { opacity: 0; transform: translateY(-120px) scale(0.3) rotate(180deg); }
+  }
+
+  @media (max-width: 600px) {
+    .title-text { font-size: 1.5rem; top: 8%; }
+    .subtitle { top: 15%; }
+    .color-legend { top: 22%; gap: 12px; }
+    .garden { width: 320px; height: 350px; }
+    .controls { gap: 8px; }
+    .btn { padding: 8px 16px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="tulip-container" id="garden">
+  <div class="cursor-tracker" id="cursorTracker"></div>
+
+  <div class="title-text">
+    When she likes tulips
+    <span class="tulip-emoji">🌷</span>
+  </div>
+  <div class="subtitle">Flowers for her</div>
+
+  <div class="color-legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background: #a855f7; color: #a855f7;"></div>
+      <span>Purple</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: #0ea5e9; color: #0ea5e9;"></div>
+      <span>Sky Blue</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: #ec4899; color: #ec4899;"></div>
+      <span>Pink</span>
+    </div>
+  </div>
+
+  <div class="glow-orb"></div>
+
+  <div class="garden" id="flowerBed">
+    <!-- Purple -->
+    <div class="tulip-wrapper" data-index="0">
+      <div class="flower-head">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+      </div>
+      <div class="stem">
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+      </div>
+    </div>
+
+    <!-- Sky Blue -->
+    <div class="tulip-wrapper" data-index="1">
+      <div class="flower-head">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+      </div>
+      <div class="stem">
+        <div class="leaf left"></div>
+      </div>
+    </div>
+
+    <!-- Pink (center, tallest) -->
+    <div class="tulip-wrapper" data-index="2">
+      <div class="flower-head">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+      </div>
+      <div class="stem">
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+      </div>
+    </div>
+
+    <!-- Purple -->
+    <div class="tulip-wrapper" data-index="3">
+      <div class="flower-head">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+      </div>
+      <div class="stem">
+        <div class="leaf right"></div>
+      </div>
+    </div>
+
+    <!-- Sky Blue -->
+    <div class="tulip-wrapper" data-index="4">
+      <div class="flower-head">
+        <div class="petal"></div>
+        <div class="petal"></div>
+        <div class="petal"></div>
+      </div>
+      <div class="stem">
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="bloomAgain()">🌷 Bloom Again</button>
+    <button class="btn" onclick="addSparkles()">✨ More Sparkles</button>
+    <button class="btn" onclick="toggleWind()">🍃 Wind</button>
+  </div>
+</div>
+
+<script>
+  const garden = document.getElementById('garden');
+  const flowerBed = document.getElementById('flowerBed');
+  let wrappers = document.querySelectorAll('.tulip-wrapper');
+  const tracker = document.getElementById('cursorTracker');
+  let windEnabled = false;
+  let windTime = 0;
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let smoothMouseX = mouseX;
+  let smoothMouseY = mouseY;
+
+  garden.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    tracker.style.opacity = '1';
+    tracker.style.left = (mouseX - 10) + 'px';
+    tracker.style.top = (mouseY - 10) + 'px';
+  });
+
+  garden.addEventListener('mouseleave', () => {
+    tracker.style.opacity = '0';
+  });
+
+  function animate() {
+    smoothMouseX += (mouseX - smoothMouseX) * 0.08;
+    smoothMouseY += (mouseY - smoothMouseY) * 0.08;
+
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    wrappers.forEach((wrapper, i) => {
+      const rect = wrapper.getBoundingClientRect();
+      const flowerX = rect.left + rect.width / 2;
+      const flowerY = rect.top + rect.height / 2;
+
+      const dx = smoothMouseX - flowerX;
+      const dy = smoothMouseY - flowerY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const maxDist = 400;
+      const influence = Math.max(0, 1 - dist / maxDist);
+
+      const baseSway = Math.sin(Date.now() / 1000 + i * 1.2) * 2;
+      const mouseAngleX = (dx / maxDist) * 12 * influence;
+      const mouseAngleY = (dy / maxDist) * 5 * influence;
+
+      let windAngle = 0;
+      if (windEnabled) {
+        windTime += 0.02;
+        windAngle = Math.sin(windTime + i * 0.8) * 4 + Math.sin(windTime * 1.5 + i) * 2;
+      }
+
+      const totalRotate = baseSway + mouseAngleX + windAngle;
+      const totalTranslateX = mouseAngleX * 1.5;
+      const totalTranslateY = mouseAngleY * 0.5;
+      const proximityScale = 1 + influence * 0.08;
+
+      const baseScale = [0.85, 0.7, 1, 0.75, 0.9][i];
+
+      wrapper.style.transform = `
+        translateX(${totalTranslateX}px) 
+        translateY(${totalTranslateY}px) 
+        rotate(${totalRotate}deg) 
+        scale(${baseScale * proximityScale})
+      `;
+
+      const head = wrapper.querySelector('.flower-head');
+      if (head) {
+        head.style.transform = `rotate(${mouseAngleX * 0.5}deg) translateY(${-mouseAngleY * 0.3}px)`;
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  function createSparkle(color) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+    const colors = ['#a855f7', '#0ea5e9', '#ec4899', '#fbbf24', '#fff'];
+    const chosenColor = color || colors[Math.floor(Math.random() * colors.length)];
+    sparkle.style.color = chosenColor;
+    sparkle.style.background = chosenColor;
+    sparkle.style.boxShadow = `0 0 8px ${chosenColor}, 0 0 16px ${chosenColor}`;
+
+    const x = 20 + Math.random() * 60;
+    const y = 25 + Math.random() * 45;
+    sparkle.style.left = x + '%';
+    sparkle.style.top = y + '%';
+    sparkle.style.animation = `sparkleFloat ${2 + Math.random() * 3}s ease-out forwards`;
+
+    const size = 2 + Math.random() * 3;
+    sparkle.style.width = size + 'px';
+    sparkle.style.height = size + 'px';
+
+    garden.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 5000);
+  }
+
+  function addSparkles() {
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => createSparkle(), i * 80);
+    }
+  }
+
+  function bloomAgain() {
+    const bed = document.getElementById('flowerBed');
+    const currentWrappers = bed.querySelectorAll('.tulip-wrapper');
+    currentWrappers.forEach((w, i) => {
+      const clone = w.cloneNode(true);
+      bed.replaceChild(clone, w);
+    });
+    wrappers = document.querySelectorAll('.tulip-wrapper');
+    setTimeout(addSparkles, 800);
+  }
+
+  function toggleWind() {
+    windEnabled = !windEnabled;
+    const btn = document.querySelectorAll('.btn')[2];
+    btn.style.background = windEnabled ? 'rgba(139, 92, 246, 0.3)' : 'rgba(255,255,255,0.05)';
+    btn.style.borderColor = windEnabled ? 'rgba(139, 92, 246, 0.6)' : 'rgba(255,255,255,0.15)';
+  }
+
+  setInterval(() => {
+    if (Math.random() > 0.5) createSparkle();
+  }, 600);
+
+  setTimeout(addSparkles, 1200);
+
+  garden.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        const colors = ['#a855f7', '#0ea5e9', '#ec4899', '#fbbf24'];
+        const c = colors[Math.floor(Math.random() * colors.length)];
+        sparkle.style.color = c;
+        sparkle.style.background = c;
+        sparkle.style.left = (e.clientX / window.innerWidth * 100) + '%';
+        sparkle.style.top = (e.clientY / window.innerHeight * 100) + '%';
+        sparkle.style.animation = `sparkleFloat ${1.5 + Math.random() * 2}s ease-out forwards`;
+        garden.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 4000);
+      }, i * 50);
+    }
+  });
+</script>
+
+</body>
+</html>
